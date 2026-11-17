@@ -13,11 +13,10 @@ const initialFormData = {
     employee_id: "",
 };
 
-function CertificateForm() {
+function CertificateForm({ onSubmit, onChange, isSubmitting }) {
     const [formData, setFormData] = useState(initialFormData);
     const [errors, setErrors] = useState({});
     const [touched, setTouched] = useState({});
-    const [isValidated, setIsValidated] = useState(false);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -28,7 +27,7 @@ function CertificateForm() {
         };
 
         setFormData(updatedFormData);
-        setIsValidated(false);
+        onChange?.();
 
         // Validate again only after the field has been touched.
         if (touched[name]) {
@@ -65,7 +64,6 @@ function CertificateForm() {
 
         setErrors(validationErrors);
 
-        // Mark every field as touched to display all errors.
         setTouched({
             address_to: true,
             purpose: true,
@@ -74,14 +72,11 @@ function CertificateForm() {
         });
 
         if (Object.keys(validationErrors).length > 0) {
-            setIsValidated(false);
             return;
         }
 
-        setIsValidated(true);
-
-        // API integration will be added in Sprint 3.
-        console.log("Valid certificate request:", formData);
+        // Pass validated data to the parent page.
+        onSubmit(formData);
     };
 
     return (
@@ -103,6 +98,7 @@ function CertificateForm() {
                             ? "address-error"
                             : undefined
                     }
+                    disabled={isSubmitting}
                 />
                 {touched.address_to && errors.address_to && (
                     <p className="field-error" id="address-error">
@@ -126,6 +122,7 @@ function CertificateForm() {
                             ? "purpose-error"
                             : undefined
                     }
+                    disabled={isSubmitting}
                 />
                 <div className="field-meta">
                     <span>Minimum 50 characters</span>
@@ -156,6 +153,7 @@ function CertificateForm() {
                             ? "date-error"
                             : undefined
                     }
+                    disabled={isSubmitting}
                 />
                 {touched.issued_on && errors.issued_on && (
                     <p className="field-error" id="date-error">
@@ -182,6 +180,7 @@ function CertificateForm() {
                             ? "employee-error"
                             : undefined
                     }
+                    disabled={isSubmitting}
                 />
                 {touched.employee_id && errors.employee_id && (
                     <p className="field-error" id="employee-error">
@@ -190,12 +189,9 @@ function CertificateForm() {
                 )}
             </div>
 
-            <button type="submit">Submit Request</button>
-            {isValidated && (
-                <p className="form-success" role="status">
-                    Form validated successfully. Ready for submission.
-                </p>
-            )}
+            <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Submitting..." : "Submit Request"}
+            </button>
         </form>
     );
 }

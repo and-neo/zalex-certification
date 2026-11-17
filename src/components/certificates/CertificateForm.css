@@ -62,7 +62,15 @@ form button[type="submit"]:hover {
 
 .form-success {
     margin-top: 16px;
-    color: var(--color-success);
-    font-size: 0.9rem;
-    font-weight: 500;
+    font-size: 1rem;
+}
+
+.form-error {
+    margin-top: 16px;
+    font-size: 1rem;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
