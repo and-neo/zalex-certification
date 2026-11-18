@@ -12,3 +12,11 @@ export async function requestCertificate(formData) {
 
     return response.data;
 }
+
+/**
+ * Fetches the existing certificate requests from the API.
+ */
+export async function getCertificateRequests() {
+    const response = await api.get("/request-list");
+    return response.data;
+}
