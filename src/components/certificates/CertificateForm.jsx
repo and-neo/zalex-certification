@@ -18,6 +18,20 @@ function CertificateForm({ onSubmit, onChange, isSubmitting }) {
     const [errors, setErrors] = useState({});
     const [touched, setTouched] = useState({});
 
+    const updateFieldError = (name, validationErrors) => {
+        setErrors((prevErrors) => {
+            const updatedErrors = { ...prevErrors };
+
+            if (validationErrors[name]) {
+                updatedErrors[name] = validationErrors[name];
+            } else {
+                delete updatedErrors[name];
+            }
+
+            return updatedErrors;
+        });
+    };
+
     const handleChange = (event) => {
         const { name, value } = event.target;
 
@@ -29,41 +43,40 @@ function CertificateForm({ onSubmit, onChange, isSubmitting }) {
         setFormData(updatedFormData);
         onChange?.();
 
-        // Validate again only after the field has been touched.
+        // Revalidate a field as the user edits it, but only after its first blur.
         if (touched[name]) {
-            const validationErrors = validateCertificate(updatedFormData);
-
-            setErrors((prevErrors) => ({
-                ...prevErrors,
-                [name]: validationErrors[name],
-            }));
+            updateFieldError(name, validateCertificate(updatedFormData));
         }
     };
 
     const handleBlur = (event) => {
         const { name } = event.target;
 
+        // Mark the field as visited so its validation feedback can be displayed.
         setTouched((prevTouched) => ({
             ...prevTouched,
             [name]: true,
         }));
 
-        const validationErrors = validateCertificate(formData);
-
-        // Update only the error of the field that lost focus.
-        setErrors((prevErrors) => ({
-            ...prevErrors,
-            [name]: validationErrors[name],
-        }));
+        updateFieldError(name, validateCertificate(formData));
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        const validationErrors = validateCertificate(formData);
+        // Normalize input before validating and sending it to the API.
+        const normalizedFormData = {
+            ...formData,
+            address_to: formData.address_to.trim(),
+            purpose: formData.purpose.trim(),
+            employee_id: formData.employee_id.trim(),
+        };
+
+        const validationErrors = validateCertificate(normalizedFormData);
 
         setErrors(validationErrors);
 
+        // Display validation feedback for all fields after a submit attempt.
         setTouched({
             address_to: true,
             purpose: true,
@@ -75,8 +88,8 @@ function CertificateForm({ onSubmit, onChange, isSubmitting }) {
             return;
         }
 
-        // Pass validated data to the parent page.
-        onSubmit(formData);
+        // Submit only the validated and normalized data.
+        onSubmit(normalizedFormData);
     };
 
     return (
