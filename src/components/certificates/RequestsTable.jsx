@@ -1,6 +1,6 @@
 import "./RequestsTable.css";
 
-function RequestsTable({ requests, sortConfig, onSort }) {
+function RequestsTable({ requests, sortConfig, onSort, isStatusFiltered }) {
     if (requests.length === 0) {
         return <p>No certificate requests found.</p>;
     }
@@ -43,26 +43,31 @@ function RequestsTable({ requests, sortConfig, onSort }) {
                         <th
                             scope="col"
                             aria-sort={
-                                sortConfig.key === "status"
-                                    ? sortConfig.direction === "asc"
-                                        ? "ascending"
-                                        : "descending"
-                                    : "none"
+                                isStatusFiltered
+                                    ? "none"
+                                    : sortConfig.key === "status"
+                                      ? sortConfig.direction === "asc"
+                                          ? "ascending"
+                                          : "descending"
+                                      : "none"
                             }
                         >
                             <button
                                 type="button"
                                 className="sort-button"
                                 onClick={() => onSort("status")}
+                                disabled={isStatusFiltered}
                             >
                                 Status
-                                <span aria-hidden="true">
-                                    {sortConfig.key === "status"
-                                        ? sortConfig.direction === "asc"
-                                            ? " ↑"
-                                            : " ↓"
-                                        : " ↕"}
-                                </span>
+                                {!isStatusFiltered && (
+                                    <span aria-hidden="true">
+                                        {sortConfig.key === "status"
+                                            ? sortConfig.direction === "asc"
+                                                ? " ↑"
+                                                : " ↓"
+                                            : " ↕"}
+                                    </span>
+                                )}
                             </button>
                         </th>
                     </tr>

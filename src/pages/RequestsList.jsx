@@ -160,6 +160,7 @@ function RequestsList() {
                         requests={displayedRequests}
                         sortConfig={sortConfig}
                         onSort={handleSort}
+                        isStatusFiltered={Boolean(filters.status)}
                     />
                 </>
             )}

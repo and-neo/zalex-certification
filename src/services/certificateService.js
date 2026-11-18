@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// Shared Axios instance for certificate API requests.
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL,
     params: {

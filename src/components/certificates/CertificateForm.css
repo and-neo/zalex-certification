@@ -74,3 +74,34 @@ button:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }
+
+.form-group textarea {
+    resize: none;
+}
+
+.button-secondary {
+    padding: 10px 16px;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font: inherit;
+    cursor: pointer;
+}
+
+.button-secondary:hover {
+    background-color: var(--color-background);
+}
+
+.button-secondary:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+}

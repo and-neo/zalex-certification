@@ -1,5 +1,33 @@
 :root {
+    /* Typography */
     font-family: Arial, sans-serif;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+
+    /* Brand colors */
+    --color-primary: #2563eb;
+    --color-primary-hover: #1d4ed8;
+
+    /* Text colors */
+    --color-text: #1e293b;
+    --color-text-muted: #64748b;
+
+    /* Background colors */
+    --color-background: #f8fafc;
+    --color-surface: #ffffff;
+
+    /* Border colors */
+    --color-border: #cbd5e1;
+    --color-border-light: #e2e8f0;
+
+    /* Feedback colors */
+    --color-error: #dc2626;
+    --color-success: #15803d;
+
+    /* Shared styling */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+
     color: var(--color-text);
     background-color: var(--color-background);
 }
@@ -20,7 +48,7 @@ a {
 
 .site-header {
     background-color: var(--color-surface);
-    border-bottom: var(--color-border-light);
+    border-bottom: 1px solid var(--color-border-light);
 }
 
 .navbar {
@@ -84,38 +112,4 @@ a {
     .main-content {
         padding: 32px 16px;
     }
-}
-
-:root {
-    /* Typography */
-    font-family: Arial, sans-serif;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-
-    /* Brand colors */
-    --color-primary: #2563eb;
-    --color-primary-hover: #1d4ed8;
-
-    /* Text colors */
-    --color-text: #1e293b;
-    --color-text-muted: #64748b;
-
-    /* Background colors */
-    --color-background: #f8fafc;
-    --color-surface: #ffffff;
-
-    /* Border colors */
-    --color-border: #cbd5e1;
-    --color-border-light: #e2e8f0;
-
-    /* Feedback colors */
-    --color-error: #dc2626;
-    --color-success: #15803d;
-
-    /* Shared styling */
-    --radius-sm: 6px;
-    --radius-md: 8px;
-
-    color: var(--color-text);
-    background-color: var(--color-background);
 }

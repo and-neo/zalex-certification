@@ -13,7 +13,14 @@ const initialFormData = {
     employee_id: "",
 };
 
-function CertificateForm({ onSubmit, onChange, isSubmitting }) {
+function CertificateForm({
+    onSubmit,
+    onChange,
+    onClear,
+    isSubmitting,
+    submitStatus,
+    submitError,
+}) {
     const [formData, setFormData] = useState(initialFormData);
     const [errors, setErrors] = useState({});
     const [touched, setTouched] = useState({});
@@ -139,7 +146,7 @@ function CertificateForm({ onSubmit, onChange, isSubmitting }) {
                 />
                 <div className="field-meta">
                     <span>Minimum 50 characters</span>
-                    <span>{formData.purpose.trim().length}/50</span>
+                    <span>{formData.purpose.trim().length} characters</span>
                 </div>
                 {touched.purpose && errors.purpose && (
                     <p className="field-error" id="purpose-error">
@@ -202,9 +209,34 @@ function CertificateForm({ onSubmit, onChange, isSubmitting }) {
                 )}
             </div>
 
-            <button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Submitting..." : "Submit Request"}
-            </button>
+            {submitStatus === "success" && (
+                <p className="form-success" role="status">
+                    Your certificate request has been submitted successfully.
+                </p>
+            )}
+
+            {submitStatus === "error" && (
+                <p className="form-error" role="alert">
+                    {submitError}
+                </p>
+            )}
+
+            <div className="form-actions">
+                <button type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? "Submitting..." : "Submit Request"}
+                </button>
+
+                {submitStatus === "success" && (
+                    <button
+                        type="button"
+                        className="button-secondary"
+                        onClick={onClear}
+                        disabled={isSubmitting}
+                    >
+                        Clear Form
+                    </button>
+                )}
+            </div>
         </form>
     );
 }

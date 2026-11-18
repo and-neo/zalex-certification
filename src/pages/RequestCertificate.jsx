@@ -6,6 +6,16 @@ function RequestCertificate() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState(null);
     const [submitError, setSubmitError] = useState("");
+    const [formVersion, setFormVersion] = useState(0);
+
+    /**
+     * Resets the form and clears the submission feedback.
+     * Changing the form key creates a fresh form instance.
+     */
+    const handleClearForm = () => {
+        setFormVersion((prevVersion) => prevVersion + 1);
+        clearSubmitFeedback();
+    };
 
     const clearSubmitFeedback = () => {
         setSubmitStatus(null);
@@ -16,8 +26,7 @@ function RequestCertificate() {
         if (isSubmitting) return;
 
         setIsSubmitting(true);
-        setSubmitStatus(null);
-        setSubmitError("");
+        clearSubmitFeedback();
 
         try {
             const response = await requestCertificate(formData);
@@ -44,22 +53,14 @@ function RequestCertificate() {
             <p>Submit a new employment certificate request.</p>
 
             <CertificateForm
+                key={formVersion}
                 onSubmit={handleCertificateSubmit}
                 onChange={clearSubmitFeedback}
+                onClear={handleClearForm}
                 isSubmitting={isSubmitting}
+                submitStatus={submitStatus}
+                submitError={submitError}
             />
-
-            {submitStatus === "success" && (
-                <p className="form-success" role="status">
-                    Your certificate request has been submitted successfully.
-                </p>
-            )}
-
-            {submitStatus === "error" && (
-                <p className="form-error" role="alert">
-                    {submitError}
-                </p>
-            )}
         </section>
     );
 }
